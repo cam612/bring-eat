@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="icon" href="https://i.postimg.cc/nLpg5Crj/1000036183-Photoroom.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+        <title>Beaking bad</title>
+
+        <link rel="stylesheet" href="style1.css">
+    </head>
+
+    <body>
+        <nav id="menu">
+            <a href="Home.html"><img id="logo" src="https://i.postimg.cc/3J1sByP2/logo.png" alt="Beaking Bad"></a>
+            <ul>
+                <li><a href="Donuts.html">Donuts</a></li>
+                <li><a href="Creation.html">Creation</a></li>
+                <li><a href="Basket.html">Basket</a></li>
+                <li><a href="COntact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+      <main class="panier">
+        <br><br><br><br><br><br><br><br>
+        <h1>Your Basket <i class="icon icon-basket"></i></h1>
+
+        <div id="cart"></div>
+
+        <div class="basket">
+          <button class="btn_1">Buy</button>
+          <h1 id="total" style="text-align:center;"></h1>
+          <button class="btn_1"  id="clear-cart">Empty</button>
+        </div>
+
+      </main>
+
+      <footer>
+        <a href="Basket.html"><img id="logo_foot" src="https://i.postimg.cc/3J1sByP2/logo.png" alt="Beaking Bad"></a>
+            <article class="foot_cont">
+                <p>Website developed by Bring'eat using HTML and CSS.</p>
+                <p>&copy Bring'eat 2026</p>
+            </article>
+
+            <article class="resaux">
+              <img src="https://cdn-icons-png.flaticon.com/128/3955/3955024.png" alt="">
+              <img src="https://cdn-icons-png.flaticon.com/128/5968/5968764.png" alt="">
+              <img src="https://cdn-icons-png.flaticon.com/128/5969/5969020.png" alt="">
+            </article>
+      </footer>
+
+      <!--gestion du panier-->
+      <script>
+      let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+      const cartContainer = document.getElementById("cart");
+      const totalDisplay = document.getElementById("total");
+
+      function displayCart(){
+
+        cartContainer.innerHTML = "";
+
+        let total = 0;
+
+        Object.values(cart).forEach(item => {
+
+          // calcul du prix
+          total += item.price * item.qty;
+
+          let div = document.createElement("div");
+          div.className = "cart-item";
+
+          div.innerHTML = `
+            <img src="${item.img}">
+            <div>
+              <h3>${item.name}</h3>
+              <p>${item.price} €</p>
+            </div>
+            <div class="qty">x${item.qty}</div>
+          `;
+
+          cartContainer.appendChild(div);
+        });
+
+        // afficher total
+        totalDisplay.textContent = "Total : " + total + " €";
+      }
+
+      displayCart();
+      </script>
+
+      <!--Vider le panier-->
+      <script>
+        document.getElementById("clear-cart").addEventListener("click", () => {
+
+          // supprimer le panier
+          localStorage.removeItem("cart");
+
+          // vider l'affichage
+          document.getElementById("cart").innerHTML = "";
+          document.getElementById("total").textContent = "Total : 0 €";
+
+        });
+      </script>
+
+       <!--menu apparaitre/dispraitre-->
+      <script>
+        var prevScrollpos = window.pageYOffset;
+        window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+          if (prevScrollpos > currentScrollPos) {
+            document.getElementById("menu").style.top = "0";
+          } else {
+            document.getElementById("menu").style.top = "-170px";
+          }
+          prevScrollpos = currentScrollPos;
+        }
+
+        window.onload = function() {
+        document.getElementById("menu").style.top = "0";
+        }
+      </script>
+    </body>
+</html>
