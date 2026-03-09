@@ -19,7 +19,7 @@
                 <li><a href="Donuts.html">Donuts</a></li>
                 <li><a href="Creation.html">Creation</a></li>
                 <li><a href="Basket.html">Basket</a></li>
-                <li><a href="COntact.html">Contact</a></li>
+                <li><a href="Contact.html">Contact</a></li>
             </ul>
         </nav>
 
@@ -53,56 +53,72 @@
 
       <!--gestion du panier-->
       <script>
-      let cart = JSON.parse(localStorage.getItem("cart")) || {};
+      // On récupère le panier ou un objet vide
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
-      const cartContainer = document.getElementById("cart");
-      const totalDisplay = document.getElementById("total");
+const cartContainer = document.getElementById("cart");
+const totalDisplay = document.getElementById("total");
 
-      function displayCart(){
+function displayCart() {
+    cartContainer.innerHTML = "";
+    let total = 0;
 
-        cartContainer.innerHTML = "";
+    // On transforme l'objet en tableau pour boucler dessus
+    Object.keys(cart).forEach(id => {
+        const item = cart[id];
+        total += item.price * item.qty;
 
-        let total = 0;
+        let div = document.createElement("div");
+        div.className = "cart-item";
 
-        Object.values(cart).forEach(item => {
-
-          // calcul du prix
-          total += item.price * item.qty;
-
-          let div = document.createElement("div");
-          div.className = "cart-item";
-
-          div.innerHTML = `
-            <img src="${item.img}">
+        // Ajout des boutons + et - avec des fonctions onclick
+        div.innerHTML = `
+            <img src="${item.img}" style="width:50px;">
             <div>
               <h3>${item.name}</h3>
               <p>${item.price} €</p>
             </div>
-            <div class="qty">x${item.qty}</div>
-          `;
+            <div class="qty-controls">
+                <button onclick="changeQty('${id}', -1)">-</button>
+                <span>${item.qty}</span>
+                <button onclick="changeQty('${id}', 1)">+</button>
+            </div>
+        `;
+        cartContainer.appendChild(div);
+    });
 
-          cartContainer.appendChild(div);
-        });
+    totalDisplay.textContent = "Total : " + total.toFixed(2) + " €";
+}
 
-        // afficher total
-        totalDisplay.textContent = "Total : " + total + " €";
-      }
+// Nouvelle fonction pour modifier la quantité
+function changeQty(id, delta) {
+    if (cart[id]) {
+        cart[id].qty += delta;
 
-      displayCart();
+        // Si la quantité tombe à 0 ou moins, on supprime l'article
+        if (cart[id].qty <= 0) {
+            delete cart[id];
+        }
+
+        // Sauvegarde dans le localStorage
+        localStorage.setItem("cart", JSON.stringify(cart));
+        
+        // On rafraîchit l'affichage
+        displayCart();
+    }
+}
+
+// Initialisation au chargement
+displayCart();
       </script>
 
       <!--Vider le panier-->
       <script>
-        document.getElementById("clear-cart").addEventListener("click", () => {
-
-          // supprimer le panier
+          document.getElementById("clear-cart").addEventListener("click", () => {
           localStorage.removeItem("cart");
-
-          // vider l'affichage
-          document.getElementById("cart").innerHTML = "";
-          document.getElementById("total").textContent = "Total : 0 €";
-
-        });
+          cart = {}; // On vide aussi la variable locale
+          displayCart(); // On rafraîchit l'affichage proprement
+      });
       </script>
 
        <!--menu apparaitre/dispraitre-->

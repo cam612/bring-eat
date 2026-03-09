@@ -10,7 +10,9 @@
     --color-3:  rgb(253, 126, 200);;
 }
 
-
+.rose{
+   background-color: #fff5f8;
+}
 
 /*commun*/
 body{
@@ -47,7 +49,6 @@ h1{
     top: 0;           /* au top de la page */
     left: 0;
     width: 100%;
-    background-color: white;  /* ou la couleur de ton menu */
     z-index: 9999;    /* au-dessus de tout le reste */
     transition: top 1s; /* effet smooth pour apparaître/disparaître */
 }
@@ -413,6 +414,7 @@ form{
     padding-bottom: 10px;
     width: 700px;
     margin-bottom: 20px;
+    margin-top: 180px;
 }
 
 
@@ -456,4 +458,30 @@ form button{
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 650px;
+}
+
+
+.panier{
+    min-height: 650px;
+}
+
+
+.qty-controls {
+    display: flex;
+    
+    gap: 10px;
+}
+
+.qty-controls button {
+    background-color: var(--color-secondary);
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.qty-controls button:hover {
+    background-color: var(--color-primary);
 }
